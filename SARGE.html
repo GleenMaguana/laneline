@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Laneline — Shoes built for the stretch run</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Archivo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="SARGE.css">
+</head>
+
+<body>
+
+<!-- =========================================================
+     LOGIN / SIGN UP SCREEN
+========================================================= -->
+
+<div id="authScreen">
+
+    <div class="auth-container">
+
+        <div class="auth-brand">
+            <span class="bar"></span>
+            LANELINE
+        </div>
+
+        <!-- LOGIN -->
+
+        <div id="loginSection">
+
+            <h1>Welcome.</h1>
+
+            <p class="auth-subtitle">
+                Log in to access the Laneline store.
+            </p>
+
+            <form class="auth-form" id="loginForm">
+
+                <div class="auth-field">
+
+                    <label for="loginEmail">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        placeholder="Enter your email"
+                        autocomplete="username"
+                        required
+                    >
+
+                </div>
+
+                <div class="auth-field">
+
+                    <label for="loginPassword">
+                        Password
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="loginPassword"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            id="showLoginPassword"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="auth-message"
+                    id="loginMessage"
+                ></div>
+
+                <button
+                    type="submit"
+                    class="auth-button"
+                >
+                    Log In
+                </button>
+
+            </form>
+
+            <div class="auth-switch">
+
+                Don't have an account?
+
+                <button
+                    type="button"
+                    id="showSignup"
+                >
+                    Sign Up
+                </button>
+
+            </div>
+
+            <div class="demo-account">
+
+                <strong>Demo Account</strong><br>
+
+                Email:
+                user@laneline.com
+
+                <br>
+
+                Password:
+                123456
+
+            </div>
+
+        </div>
+
+        <!-- SIGN UP -->
+
+        <div
+            id="signupSection"
+            style="display:none;"
+        >
+
+            <h1>Create Account.</h1>
+
+            <p class="auth-subtitle">
+                Sign up to access the Laneline store.
+            </p>
+
+            <form
+                class="auth-form"
+                id="signupForm"
+            >
+
+                <div class="auth-field">
+
+                    <label for="signupName">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="signupName"
+                        placeholder="Enter your full name"
+                        autocomplete="name"
+                        required
+                    >
+
+                </div>
+
+                <div class="auth-field">
+
+                    <label for="signupEmail">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="signupEmail"
+                        placeholder="Enter your email"
+                        autocomplete="email"
+                        required
+                    >
+
+                </div>
+
+                <div class="auth-field">
+
+                    <label for="signupPassword">
+                        Password
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="signupPassword"
+                            placeholder="Create a password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            id="showSignupPassword"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div class="auth-field">
+
+                    <label for="signupConfirmPassword">
+                        Confirm Password
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                            type="password"
+                            id="signupConfirmPassword"
+                            placeholder="Confirm your password"
+                            autocomplete="new-password"
+                            required
+                        >
+
+                        <button
+                            type="button"
+                            class="show-password"
+                            id="showConfirmPassword"
+                        >
+                            Show
+                        </button>
+
+                    </div>
+
+                </div>
+
+                <div
+                    class="auth-message"
+                    id="signupMessage"
+                ></div>
+
+                <button
+                    type="submit"
+                    class="auth-button"
+                >
+                    Create Account
+                </button>
+
+            </form>
+
+            <div class="auth-switch">
+
+                Already have an account?
+
+                <button
+                    type="button"
+                    id="showLogin"
+                >
+                    Log In
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     MAIN WEBSITE
+========================================================= -->
+
+<div
+    id="mainInterface"
+    class="hidden"
+>
+
+<header>
+
+    <div class="wrap header-row">
+
+        <div class="logo">
+
+            <span class="bar"></span>
+
+            LANELINE
+
+        </div>
+
+        <nav class="primary-nav">
+
+            <a href="#shop">
+                Shop
+            </a>
+
+            <a href="#spotlight">
+                Featured
+            </a>
+
+            <a href="#newsletter">
+                Journal
+            </a>
+
+            <a href="#footer">
+                Support
+            </a>
+
+        </nav>
+
+        <div class="header-actions">
+
+            <div class="user-menu">
+
+                <span
+                    class="user-name"
+                    id="userName"
+                ></span>
+
+                <button
+                    class="logout-btn"
+                    id="logoutBtn"
+                >
+                    Log Out
+                </button>
+
+            </div>
+
+            <button
+                class="icon-btn hamburger"
+                aria-label="Open menu"
+            >
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <button
+                class="icon-btn"
+                id="cartToggle"
+                aria-label="Open bag"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                >
+
+                    <path d="M6 8h12l-1 12H7L6 8z"/>
+
+                    <path d="M9 8V6a3 3 0 016 0v2"/>
+
+                </svg>
+
+                <span
+                    class="cart-count"
+                    id="cartCount"
+                >
+                    0
+                </span>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div
+        class="lane-bg"
+        aria-hidden="true"
+    ></div>
+
+    <div class="wrap hero-grid">
+
+        <div class="hero-copy">
+
+            <span class="kicker">
+                New season lineup
+            </span>
+
+            <h1>
+                Built for the last hundred meters.
+            </h1>
+
+            <p class="sub">
+
+                Track-tested cushioning and grip,
+                cut for the street. Four silhouettes,
+                one obsession with the stretch between
+                the gun and the tape.
+
+            </p>
+
+            <div class="hero-cta">
+
+                <a
+                    href="#shop"
+                    class="btn accent"
+                >
+                    Shop the lineup
+                </a>
+
+                <a
+                    href="#spotlight"
+                    class="btn ghost"
+                >
+                    Find your size
+                </a>
+
+            </div>
+
+            <div class="hero-stats">
+
+                <div>
+
+                    <strong>4</strong>
+
+                    <span>
+                        Silhouettes
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <strong>24</strong>
+
+                    <span>
+                        Colorways
+                    </span>
+
+                </div>
+
+                <div>
+
+                    <strong>7–13</strong>
+
+                    <span>
+                        Sizes stocked
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="hero-art">
+
+            <div
+                class="shoe-shadow"
+                aria-hidden="true"
+            ></div>
+
+            <div
+                class="hero-frame"
+                id="heroShoe"
+            ></div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     PRODUCTS
+========================================================= -->
+
+<main
+    class="wrap"
+    id="shop"
+>
+
+    <div class="section-head">
+
+        <h2>
+            The lineup
+        </h2>
+
+        <div
+            class="tabs"
+            id="tabs"
+        ></div>
+
+    </div>
+
+    <div
+        class="grid"
+        id="productGrid"
+    ></div>
+
+</main>
+
+
+<!-- =========================================================
+     SPOTLIGHT
+========================================================= -->
+
+<section
+    class="spotlight wrap"
+    id="spotlight"
+>
+
+    <div
+        class="spotlight-media"
+        id="spotlightMedia"
+    ></div>
+
+    <div class="spotlight-copy">
+
+        <span
+            class="cat"
+            id="spCat"
+        >
+            Running
+        </span>
+
+        <h2 id="spName">
+            ADDI ZERO
+        </h2>
+
+        <p
+            class="blurb"
+            id="spBlurb"
+        ></p>
+
+        <div
+            class="spotlight-price"
+            id="spPrice"
+        ></div>
+
+        <span class="field-label">
+            Colorway
+        </span>
+
+        <div
+            class="colorways"
+            id="spColors"
+        ></div>
+
+        <span class="field-label">
+            Size (US)
+        </span>
+
+        <div
+            class="sizes"
+            id="spSizes"
+        ></div>
+
+        <p
+            class="size-hint"
+            id="sizeHint"
+        >
+            &nbsp;
+        </p>
+
+        <div class="spotlight-actions">
+
+            <button
+                class="btn accent"
+                id="addToBagBtn"
+            >
+                Add to bag
+            </button>
+
+            <button
+                class="btn ghost"
+                id="wishlistBtn"
+            >
+                Save for later
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     NEWSLETTER
+========================================================= -->
+
+<section
+    class="newsletter"
+    id="newsletter"
+>
+
+    <div class="wrap newsletter-inner">
+
+        <div>
+
+            <h2>
+                Get next drop before it lists.
+            </h2>
+
+            <p
+                class="newsletter-msg"
+                id="newsletterMsg"
+            >
+                &nbsp;
+            </p>
+
+        </div>
+
+        <form id="newsletterForm">
+
+            <input
+                type="email"
+                placeholder="you@email.com"
+                required
+                aria-label="Email address"
+            >
+
+            <button type="submit">
+                Notify me
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer
+    class="site-foot wrap"
+    id="footer"
+>
+
+    <div class="logo">
+
+        <span class="bar"></span>
+
+        LANELINE
+
+    </div>
+
+    <div class="foot-cols">
+
+        <div class="foot-col">
+
+            <h4>
+                Shop
+            </h4>
+
+            <a href="#shop">
+                Running
+            </a>
+
+            <a href="#shop">
+                Basketball
+            </a>
+
+            <a href="#shop">
+                Lifestyle
+            </a>
+
+            <a href="#shop">
+                Trail
+            </a>
+
+        </div>
+
+        <div class="foot-col">
+
+            <h4>
+                Support
+            </h4>
+
+            <a href="#">
+                Sizing guide
+            </a>
+
+            <a href="#">
+                Returns
+            </a>
+
+            <a href="#">
+                Shipping
+            </a>
+
+            <a href="#">
+                Contact
+            </a>
+
+        </div>
+
+        <div class="foot-col">
+
+            <h4>
+                Company
+            </h4>
+
+            <a href="#">
+                About
+            </a>
+
+            <a href="#">
+                Stores
+            </a>
+
+            <a href="#">
+                Careers
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="foot-legal">
+
+        Mockup storefront for demonstration purposes.
+        © Laneline.
+
+    </div>
+
+</footer>
+
+
+<!-- =========================================================
+     CART
+========================================================= -->
+
+<div
+    class="overlay"
+    id="overlay"
+></div>
+
+<aside
+    class="drawer"
+    id="cartDrawer"
+    aria-label="Shopping bag"
+>
+
+    <div class="drawer-head">
+
+        <h3>
+            Your bag
+        </h3>
+
+        <button
+            class="drawer-close"
+            id="drawerClose"
+            aria-label="Close bag"
+        >
+
+            <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.8"
+            >
+
+                <path d="M6 6l12 12"/>
+
+                <path d="M18 6L6 18"/>
+
+            </svg>
+
+        </button>
+
+    </div>
+
+    <div
+        class="drawer-items"
+        id="drawerItems"
+    ></div>
+
+    <div class="drawer-foot">
+
+        <div class="subtotal-row">
+
+            <span>
+                Subtotal
+            </span>
+
+            <span id="subtotal">
+                $0
+            </span>
+
+        </div>
+
+        <button
+            class="btn accent checkout-btn"
+            id="checkoutBtn"
+        >
+            Checkout
+        </button>
+
+        <p class="drawer-note">
+
+            Mockup checkout —
+            no payment is processed.
+
+        </p>
+
+    </div>
+
+</aside>
+
+
+<div
+    class="toast"
+    id="toast"
+></div>
+
+</div>
+
+
+<script src="SARGE.js"></script>
+
+</body>
+</html>
