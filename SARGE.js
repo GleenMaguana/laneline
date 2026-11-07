@@ -6,7 +6,28 @@ const loadingScreen =
 const loadingStartedAt =
   performance.now();
 
+const prefersReducedMotion =
+  window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
 let loadingScreenDismissed = false;
+
+function showLoadingScreen(){
+
+  loadingScreen.classList.remove('is-hidden');
+
+  loadingScreen.removeAttribute('aria-hidden');
+
+}
+
+
+function hideLoadingScreen(){
+
+  loadingScreen.classList.add('is-hidden');
+
+  loadingScreen.setAttribute('aria-hidden', 'true');
+
+}
+
 
 function dismissLoadingScreen(){
 
@@ -17,7 +38,7 @@ function dismissLoadingScreen(){
   loadingScreenDismissed = true;
 
   const minimumDuration =
-    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    prefersReducedMotion
       ? 0
       : 900;
 
@@ -25,10 +46,7 @@ function dismissLoadingScreen(){
     Math.max(0, minimumDuration - (performance.now() - loadingStartedAt));
 
   window.setTimeout(
-    () => {
-      loadingScreen.classList.add('is-hidden');
-      loadingScreen.setAttribute('aria-hidden', 'true');
-    },
+    hideLoadingScreen,
     remainingDuration
   );
 
@@ -279,6 +297,8 @@ loginForm.addEventListener(
     loginMessage.textContent =
       'Login successful!';
 
+    showLoadingScreen();
+
     setTimeout(function(){
 
       authScreen.classList.add('hidden');
@@ -297,7 +317,12 @@ loginForm.addEventListener(
 
       window.scrollTo(0,0);
 
-    },400);
+      window.setTimeout(
+        hideLoadingScreen,
+        prefersReducedMotion ? 0 : 650
+      );
+
+    }, prefersReducedMotion ? 0 : 400);
 
   }
 );
