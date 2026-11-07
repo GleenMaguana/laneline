@@ -1214,6 +1214,8 @@ document
 
       renderCart();
 
+      animateCartAdd();
+
       showToast(
         `Added ${currentProduct.name} · ${color.name} · size ${selectedSize}`
       );
@@ -1345,8 +1347,6 @@ function openDrawer(){
 
   drawer.classList.add('open');
 
-
-  animateCartAdd();
   overlay.classList.add('open');
 
 }
