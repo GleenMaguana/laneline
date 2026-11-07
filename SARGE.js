@@ -609,7 +609,7 @@ function mediaFrame(image,alt){
 
 document.getElementById('heroShoe').innerHTML =
   mediaFrame(
-    'image.jpg',
+    'Image.jpg',
     'Laneline shoe'
   );
 
