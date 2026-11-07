@@ -1189,14 +1189,97 @@ const drawerItems =
 const cartCount =
   document.getElementById('cartCount');
 
+const cartToggle =
+  document.getElementById('cartToggle');
+
 const subtotalEl =
   document.getElementById('subtotal');
+
+
+function animateCartAdd(){
+
+  cartToggle.classList.remove('cart-bump');
+
+  cartCount.classList.remove('cart-bump');
+
+  void cartToggle.offsetWidth;
+
+  cartToggle.classList.add('cart-bump');
+
+  cartCount.classList.add('cart-bump');
+
+  const image =
+    spMedia.querySelector('.media-frame img');
+
+  if(
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
+    !image ||
+    !image.complete ||
+    !image.naturalWidth
+  ){
+
+    return;
+
+  }
+
+  const start = image.getBoundingClientRect();
+
+  const target = cartToggle.getBoundingClientRect();
+
+  const flyingImage = document.createElement('img');
+
+  flyingImage.className = 'cart-flight';
+
+  flyingImage.src = image.currentSrc || image.src;
+
+  flyingImage.alt = '';
+
+  flyingImage.style.left = `${start.left}px`;
+
+  flyingImage.style.top = `${start.top}px`;
+
+  flyingImage.style.width = `${start.width}px`;
+
+  flyingImage.style.height = `${start.height}px`;
+
+  document.body.appendChild(flyingImage);
+
+  const travelX =
+    target.left + target.width / 2 - (start.left + start.width / 2);
+
+  const travelY =
+    target.top + target.height / 2 - (start.top + start.height / 2);
+
+  const animation = flyingImage.animate(
+    [
+      {
+        transform:'translate(0, 0) scale(1)',
+        opacity:1
+      },
+      {
+        transform:`translate(${travelX}px, ${travelY}px) scale(.08)`,
+        opacity:.2
+      }
+    ],
+    {
+      duration:650,
+      easing:'cubic-bezier(.2, .75, .25, 1)'
+    }
+  );
+
+  animation.onfinish = () => flyingImage.remove();
+
+  animation.oncancel = () => flyingImage.remove();
+
+}
 
 
 function openDrawer(){
 
   drawer.classList.add('open');
 
+
+  animateCartAdd();
   overlay.classList.add('open');
 
 }

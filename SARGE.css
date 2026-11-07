@@ -407,6 +407,41 @@ nav.primary-nav a:hover{
   justify-content:center;
 }
 
+@keyframes cartIconBump{
+
+  0%,100%{ transform:scale(1); }
+  38%{ transform:scale(1.2) rotate(-7deg); }
+  72%{ transform:scale(.96) rotate(3deg); }
+
+}
+
+@keyframes cartCountBump{
+
+  0%,100%{ transform:scale(1); }
+  42%{ transform:scale(1.45); }
+  76%{ transform:scale(.92); }
+
+}
+
+#cartToggle.cart-bump svg{
+  transform-origin:center;
+  animation:cartIconBump .52s cubic-bezier(.2,.75,.25,1);
+}
+
+.cart-count.cart-bump{
+  animation:cartCountBump .48s cubic-bezier(.2,.75,.25,1);
+}
+
+.cart-flight{
+  position:fixed;
+  z-index:9998;
+  display:block;
+  object-fit:contain;
+  pointer-events:none;
+  transform-origin:center;
+  will-change:transform,opacity;
+}
+
 .user-menu{
   display:flex;
   align-items:center;
@@ -1382,7 +1417,9 @@ footer.site-foot{
   .hero-art,
   .toast,
   .drawer,
-  .auth-container{
+  .auth-container,
+  #cartToggle.cart-bump svg,
+  .cart-count.cart-bump{
 
     animation:none !important;
     transition:none !important;
