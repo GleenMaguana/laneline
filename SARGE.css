@@ -877,6 +877,7 @@ nav.primary-nav a:hover{
 
 .card-tag{
   position:absolute;
+  z-index:2;
   top:12px;
   left:12px;
   font-size:12px;

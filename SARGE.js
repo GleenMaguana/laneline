@@ -909,10 +909,6 @@ function renderGrid(){
 
         <div class="card-body">
 
-          <span class="cat">
-            ${p.cat}
-          </span>
-
           <h3>
             ${p.name}
           </h3>
