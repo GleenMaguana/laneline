@@ -1,5 +1,47 @@
 (function(){
 
+const loadingScreen =
+  document.getElementById('loadingScreen');
+
+const loadingStartedAt =
+  performance.now();
+
+let loadingScreenDismissed = false;
+
+function dismissLoadingScreen(){
+
+  if(loadingScreenDismissed){
+    return;
+  }
+
+  loadingScreenDismissed = true;
+
+  const minimumDuration =
+    window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ? 0
+      : 900;
+
+  const remainingDuration =
+    Math.max(0, minimumDuration - (performance.now() - loadingStartedAt));
+
+  window.setTimeout(
+    () => {
+      loadingScreen.classList.add('is-hidden');
+      loadingScreen.setAttribute('aria-hidden', 'true');
+    },
+    remainingDuration
+  );
+
+}
+
+window.addEventListener('load', dismissLoadingScreen, { once:true });
+
+window.setTimeout(dismissLoadingScreen, 5000);
+
+if(document.readyState === 'complete'){
+  dismissLoadingScreen();
+}
+
 /* =========================================================
    AUTHENTICATION SYSTEM
 ========================================================= */
