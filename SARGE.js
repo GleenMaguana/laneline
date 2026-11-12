@@ -120,78 +120,6 @@ const userName =
 
 
 /* =========================================================
-   DEMO ACCOUNT
-========================================================= */
-
-const DEMO_ACCOUNT = {
-  name:'Demo User',
-  email:'user@laneline.com',
-  password:'123456'
-};
-
-
-/* =========================================================
-   GET SAVED USERS
-========================================================= */
-
-function getUsers(){
-
-  try{
-
-    return JSON.parse(
-      localStorage.getItem('lanelineUsers')
-    ) || [];
-
-  }catch(error){
-
-    return [];
-
-  }
-
-}
-
-
-/* =========================================================
-   SAVE USERS
-========================================================= */
-
-function saveUsers(users){
-
-  localStorage.setItem(
-    'lanelineUsers',
-    JSON.stringify(users)
-  );
-
-}
-
-
-/* =========================================================
-   CREATE DEMO ACCOUNT
-========================================================= */
-
-function initializeDemoAccount(){
-
-  const users = getUsers();
-
-  const exists =
-    users.some(
-      user =>
-        user.email.toLowerCase() ===
-        DEMO_ACCOUNT.email.toLowerCase()
-    );
-
-  if(!exists){
-
-    users.push(DEMO_ACCOUNT);
-
-    saveUsers(users);
-
-  }
-
-}
-
-
-/* =========================================================
    SHOW LOGIN
 ========================================================= */
 
@@ -235,207 +163,6 @@ function showSignupScreen(){
   },100);
 
 }
-
-
-/* =========================================================
-   LOGIN
-========================================================= */
-
-loginForm.addEventListener(
-  'submit',
-  function(e){
-
-    e.preventDefault();
-
-    const email =
-      loginEmail.value
-        .trim()
-        .toLowerCase();
-
-    const password =
-      loginPassword.value;
-
-    loginMessage.textContent = '';
-
-    loginMessage.style.color = '#B52B1A';
-
-    const users = getUsers();
-
-    const user =
-      users.find(
-        account =>
-          account.email.toLowerCase() === email &&
-          account.password === password
-      );
-
-    if(!user){
-
-      loginMessage.textContent =
-        'Incorrect email or password.';
-
-      return;
-
-    }
-
-    localStorage.setItem(
-      'lanelineLoggedIn',
-      'true'
-    );
-
-    localStorage.setItem(
-      'lanelineUser',
-      user.email
-    );
-
-    localStorage.setItem(
-      'lanelineUserName',
-      user.name
-    );
-
-    loginMessage.style.color = '#28753C';
-
-    loginMessage.textContent =
-      'Login successful!';
-
-    showLoadingScreen();
-
-    setTimeout(function(){
-
-      authScreen.classList.add('hidden');
-
-      mainInterface.classList.remove('hidden');
-
-      userName.textContent = user.name;
-
-      loginForm.reset();
-
-      showToast(
-        'Welcome to Laneline, ' +
-        user.name +
-        '!'
-      );
-
-      window.scrollTo(0,0);
-
-      window.setTimeout(
-        hideLoadingScreen,
-        prefersReducedMotion ? 0 : 650
-      );
-
-    }, prefersReducedMotion ? 0 : 400);
-
-  }
-);
-
-
-/* =========================================================
-   SIGN UP
-========================================================= */
-
-signupForm.addEventListener(
-  'submit',
-  function(e){
-
-    e.preventDefault();
-
-    const name =
-      signupName.value.trim();
-
-    const email =
-      signupEmail.value
-        .trim()
-        .toLowerCase();
-
-    const password =
-      signupPassword.value;
-
-    const confirmPassword =
-      signupConfirmPassword.value;
-
-    signupMessage.textContent = '';
-
-    signupMessage.style.color = '#B52B1A';
-
-    if(name.length < 2){
-
-      signupMessage.textContent =
-        'Please enter your full name.';
-
-      return;
-
-    }
-
-    if(password.length < 6){
-
-      signupMessage.textContent =
-        'Password must be at least 6 characters.';
-
-      return;
-
-    }
-
-    if(password !== confirmPassword){
-
-      signupMessage.textContent =
-        'Passwords do not match.';
-
-      return;
-
-    }
-
-    let users = getUsers();
-
-    const existingUser =
-      users.find(
-        user =>
-          user.email.toLowerCase() === email
-      );
-
-    if(existingUser){
-
-      signupMessage.textContent =
-        'An account with this email already exists.';
-
-      return;
-
-    }
-
-    const newUser = {
-      name:name,
-      email:email,
-      password:password
-    };
-
-    users.push(newUser);
-
-    saveUsers(users);
-
-    signupMessage.style.color = '#28753C';
-
-    signupMessage.textContent =
-      'Account created successfully!';
-
-    signupForm.reset();
-
-    setTimeout(function(){
-
-      loginSection.style.display = 'block';
-
-      signupSection.style.display = 'none';
-
-      loginEmail.value = email;
-
-      loginPassword.value = '';
-
-      loginMessage.style.color = '#28753C';
-
-      loginMessage.textContent =
-        'Account created. Please log in.';
-
-    },800);
-
-  }
-);
 
 
 /* =========================================================
@@ -545,102 +272,6 @@ document
 
 
 /* =========================================================
-   LOGOUT
-========================================================= */
-
-logoutBtn.addEventListener(
-  'click',
-  function(){
-
-    localStorage.removeItem(
-      'lanelineLoggedIn'
-    );
-
-    localStorage.removeItem(
-      'lanelineUser'
-    );
-
-    localStorage.removeItem(
-      'lanelineUserName'
-    );
-
-    mainInterface.classList.add('hidden');
-
-    authScreen.classList.remove('hidden');
-
-    loginSection.style.display = 'block';
-
-    signupSection.style.display = 'none';
-
-    loginForm.reset();
-
-    signupForm.reset();
-
-    loginMessage.textContent = '';
-
-    signupMessage.textContent = '';
-
-    loginPassword.type = 'password';
-
-    document
-      .getElementById('showLoginPassword')
-      .textContent = 'Show';
-
-    window.scrollTo(0,0);
-
-    setTimeout(function(){
-
-      loginEmail.focus();
-
-    },100);
-
-  }
-);
-
-
-/* =========================================================
-   CHECK LOGIN STATUS
-========================================================= */
-
-function checkLoginStatus(){
-
-  const loggedIn =
-    localStorage.getItem(
-      'lanelineLoggedIn'
-    ) === 'true';
-
-  const savedName =
-    localStorage.getItem(
-      'lanelineUserName'
-    );
-
-  if(loggedIn){
-
-    authScreen.classList.add('hidden');
-
-    mainInterface.classList.remove('hidden');
-
-    userName.textContent =
-      savedName || 'User';
-
-  }else{
-
-    authScreen.classList.remove('hidden');
-
-    mainInterface.classList.add('hidden');
-
-    setTimeout(function(){
-
-      loginEmail.focus();
-
-    },100);
-
-  }
-
-}
-
-
-/* =========================================================
    MEDIA FRAME
 ========================================================= */
 
@@ -689,7 +320,7 @@ document.getElementById('heroShoe').innerHTML =
    The first color should use the product's main image.
 ========================================================= */
 
-const products = [
+let products = [
 
   {
     id:'p1',
@@ -1164,6 +795,24 @@ document
       const color =
         currentProduct.colors[selectedColorIdx];
 
+      const inventory =
+        color.inventory &&
+        color.inventory.find(
+          item =>
+            Number(item.size) === Number(selectedSize)
+        );
+
+      if(!inventory || inventory.stock < 1){
+
+        sizeHint.textContent =
+          'This color and size is currently out of stock.';
+
+        sizeHint.classList.add('warn');
+
+        return;
+
+      }
+
       const key =
         currentProduct.id +
         '|' +
@@ -1179,6 +828,14 @@ document
 
       if(existing){
 
+        if(existing.qty >= inventory.stock){
+
+          showToast('There is not enough stock for that quantity.');
+
+          return;
+
+        }
+
         existing.qty += 1;
 
       }else{
@@ -1188,6 +845,8 @@ document
           key:key,
 
           id:currentProduct.id,
+
+          inventoryId:inventory.id,
 
           name:currentProduct.name,
 
@@ -1511,6 +1170,16 @@ function renderCart(){
 
               if(action === 'inc'){
 
+                const inventory = products
+                  .flatMap(product => product.colors)
+                  .flatMap(color => color.inventory || [])
+                  .find(stockItem => stockItem.id === item.inventoryId);
+
+                if(!inventory || item.qty >= inventory.stock){
+                  showToast('There is not enough stock for that quantity.');
+                  return;
+                }
+
                 item.qty += 1;
 
               }
@@ -1558,34 +1227,6 @@ function renderCart(){
     '$' + subtotal;
 
 }
-
-
-/* =========================================================
-   CHECKOUT
-========================================================= */
-
-document
-  .getElementById('checkoutBtn')
-  .addEventListener(
-    'click',
-    () => {
-
-      if(cart.length === 0){
-
-        showToast(
-          'Your bag is empty'
-        );
-
-        return;
-
-      }
-
-      showToast(
-        'This is a mockup — checkout isn’t connected to payment'
-      );
-
-    }
-  );
 
 
 /* =========================================================
@@ -1640,18 +1281,605 @@ document
 
 
 /* =========================================================
-   INITIALIZE
+   SUPABASE
 ========================================================= */
 
-initializeDemoAccount();
+const userRole =
+  document.getElementById('userRole');
+
+const ordersPanel =
+  document.getElementById('ordersPanel');
+
+const ownerDashboard =
+  document.getElementById('ownerDashboard');
+
+const ownerDashboardToggle =
+  document.getElementById('ownerDashboardToggle');
+
+const storefrontSections = [
+  document.querySelector('.hero'),
+  document.getElementById('shop'),
+  document.getElementById('spotlight'),
+  document.getElementById('newsletter'),
+  document.getElementById('footer')
+];
+
+const supabaseUrl =
+  window.LANELINE_SUPABASE_URL || '';
+
+const supabaseAnonKey =
+  window.LANELINE_SUPABASE_ANON_KEY || '';
+
+const supabaseConfigured =
+  window.supabase &&
+  supabaseUrl.startsWith('https://') &&
+  supabaseAnonKey &&
+  !supabaseUrl.includes('YOUR_SUPABASE') &&
+  !supabaseAnonKey.includes('YOUR_SUPABASE');
+
+const supabaseClient =
+  supabaseConfigured
+    ? window.supabase.createClient(supabaseUrl, supabaseAnonKey)
+    : null;
+
+let activeUser = null;
+let activeProfile = null;
+
+function supabaseSetupMessage(){
+
+  if(!window.supabase){
+    return 'The Supabase client library did not load. Check your internet connection and reload.';
+  }
+
+  return 'Add your Supabase project URL and anon key to SARGE-supabase-config.js.';
+
+}
+
+localStorage.removeItem('lanelineUsers');
+localStorage.removeItem('lanelineLoggedIn');
+localStorage.removeItem('lanelineUser');
+localStorage.removeItem('lanelineUserName');
+
+function setAuthMessage(element, message, isSuccess){
+
+  element.textContent = message;
+  element.style.color = isSuccess ? '#28753C' : '#B52B1A';
+
+}
+
+function showSignedOut(){
+
+  activeUser = null;
+  activeProfile = null;
+  userName.textContent = '';
+  userRole.textContent = '';
+  ownerDashboardToggle.hidden = true;
+  authScreen.classList.remove('hidden');
+  mainInterface.classList.add('hidden');
+  ordersPanel.hidden = true;
+  ownerDashboard.hidden = true;
+  storefrontSections.forEach(section => section.hidden = false);
+
+}
+
+function closeAccountPanels(){
+
+  ordersPanel.hidden = true;
+  ownerDashboard.hidden = true;
+  storefrontSections.forEach(section => section.hidden = false);
+
+}
+
+async function loadProducts(){
+
+  const { data, error } = await supabaseClient
+    .from('products')
+    .select('id,slug,name,category,description,price,image_path,product_variants(id,color_name,hue,image_path,inventory(id,size,stock))')
+    .eq('is_published', true)
+    .order('name');
+
+  if(error){
+    throw error;
+  }
+
+  products = data.map(product => ({
+    id:product.id,
+    slug:product.slug,
+    name:product.name,
+    cat:product.category,
+    price:Number(product.price),
+    img:product.image_path.split('/').pop(),
+    blurb:product.description,
+    colors:product.product_variants.map(variant => ({
+      id:variant.id,
+      variantId:variant.id,
+      name:variant.color_name,
+      hue:variant.hue,
+      img:variant.image_path.split('/').pop(),
+      inventory:variant.inventory
+    }))
+  }));
+
+  activeCat = 'All';
+  tabsEl.querySelectorAll('.tab').forEach(button => {
+    button.classList.toggle('active', button.textContent === 'All');
+  });
+  renderGrid();
+
+  if(products.length){
+    setSpotlight(products[0]);
+  }else{
+    spName.textContent = 'No products available';
+    spBlurb.textContent = 'Please check back soon.';
+  }
+
+}
+
+async function loadCurrentUser(session){
+
+  if(!session){
+    showSignedOut();
+    return;
+  }
+
+  activeUser = session.user;
+
+  const { data:profile, error } = await supabaseClient
+    .from('user_profiles')
+    .select('id,full_name,role')
+    .eq('id', session.user.id)
+    .single();
+
+  if(error){
+    showSignedOut();
+    setAuthMessage(
+      loginMessage,
+      'Could not load your account profile. Check that the Supabase schema has been installed.',
+      false
+    );
+    return;
+  }
+
+  activeProfile = profile;
+  userName.textContent =
+    profile.full_name || session.user.email || 'Customer';
+  userRole.textContent =
+    profile.role === 'owner' ? 'OWNER' : 'CUSTOMER';
+  ownerDashboardToggle.hidden = profile.role !== 'owner';
+  authScreen.classList.add('hidden');
+  mainInterface.classList.remove('hidden');
+
+  try{
+    await loadProducts();
+  }catch(productError){
+    products = [];
+    renderGrid();
+    showToast('Products could not be loaded: ' + productError.message);
+  }
+
+}
+
+loginForm.addEventListener('submit', async function(event){
+
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  setAuthMessage(loginMessage, '', false);
+
+  if(!supabaseClient){
+    setAuthMessage(
+      loginMessage,
+      supabaseSetupMessage(),
+      false
+    );
+    return;
+  }
+
+  const { data, error } = await supabaseClient.auth.signInWithPassword({
+    email:loginEmail.value.trim(),
+    password:loginPassword.value
+  });
+
+  if(error){
+    setAuthMessage(loginMessage, error.message, false);
+    return;
+  }
+
+  loginForm.reset();
+  await loadCurrentUser(data.session);
+  showToast('Welcome to Laneline.');
+
+}, true);
+
+signupForm.addEventListener('submit', async function(event){
+
+  event.preventDefault();
+  event.stopImmediatePropagation();
+  setAuthMessage(signupMessage, '', false);
+
+  if(!supabaseClient){
+    setAuthMessage(
+      signupMessage,
+      supabaseSetupMessage(),
+      false
+    );
+    return;
+  }
+
+  if(signupPassword.value !== signupConfirmPassword.value){
+    setAuthMessage(signupMessage, 'Passwords do not match.', false);
+    return;
+  }
+
+  const { data, error } = await supabaseClient.auth.signUp({
+    email:signupEmail.value.trim(),
+    password:signupPassword.value,
+    options:{
+      data:{ full_name:signupName.value.trim() }
+    }
+  });
+
+  if(error){
+    setAuthMessage(signupMessage, error.message, false);
+    return;
+  }
+
+  signupForm.reset();
+
+  if(data.session){
+    await loadCurrentUser(data.session);
+    showToast('Your customer account is ready.');
+  }else{
+    loginSection.style.display = 'block';
+    signupSection.style.display = 'none';
+    loginEmail.value = data.user.email;
+    setAuthMessage(
+      loginMessage,
+      'Account created. Check your email to confirm your address, then log in.',
+      true
+    );
+  }
+
+}, true);
+
+logoutBtn.addEventListener('click', async function(event){
+
+  event.preventDefault();
+  event.stopImmediatePropagation();
+
+  if(supabaseClient){
+    const { error } = await supabaseClient.auth.signOut();
+    if(error){
+      showToast('Could not log out: ' + error.message);
+      return;
+    }
+  }
+
+  showSignedOut();
+
+}, true);
+
+document
+  .getElementById('checkoutBtn')
+  .addEventListener('click', async function(event){
+
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    if(!supabaseClient || !activeUser){
+      showToast('Log in with your Supabase account before checkout.');
+      return;
+    }
+
+    if(!cart.length){
+      showToast('Your bag is empty.');
+      return;
+    }
+
+    const addressForm =
+      document.getElementById('checkoutAddress');
+
+    if(!addressForm.reportValidity()){
+      return;
+    }
+
+    const address =
+      Object.fromEntries(new FormData(addressForm).entries());
+
+    const { data:orderId, error } = await supabaseClient.rpc('place_order', {
+      p_items:cart.map(item => ({
+        inventory_id:item.inventoryId,
+        quantity:item.qty
+      })),
+      p_shipping_address:address
+    });
+
+    if(error){
+      showToast('Order could not be placed: ' + error.message);
+      return;
+    }
+
+    cart = [];
+    renderCart();
+    addressForm.reset();
+    addressForm.elements.country.value = 'Philippines';
+    closeDrawer();
+    showToast(
+      'Order ' + orderId.slice(0, 8).toUpperCase() +
+      ' placed and awaiting owner confirmation.'
+    );
+    await loadCustomerOrders();
+    if(activeProfile.role === 'owner'){
+      await loadOwnerOrders();
+    }
+
+  }, true);
+
+function createOrderCard(order, ownerView){
+
+  const card = document.createElement('article');
+  card.className = 'order-card';
+
+  const header = document.createElement('div');
+  header.className = 'order-card-head';
+
+  const summary = document.createElement('div');
+  const title = document.createElement('h3');
+  title.textContent = 'Order ' + order.id.slice(0, 8).toUpperCase();
+  const detail = document.createElement('p');
+  const date = new Date(order.created_at).toLocaleString();
+  detail.textContent = (ownerView
+    ? (order.customer_name + ' · ' + order.customer_email + ' · ')
+    : '') + date + ' · $' + Number(order.total).toFixed(2);
+  summary.append(title, detail);
+
+  const status = document.createElement('span');
+  status.className = 'order-status';
+  status.textContent = order.status;
+  header.append(summary, status);
+  card.appendChild(header);
+
+  if(ownerView && order.shipping_address){
+    const address = order.shipping_address;
+    const shipping = document.createElement('p');
+    shipping.textContent =
+      'Ship to: ' + address.recipient_name + ', ' +
+      address.address_line1 + ', ' + address.city + ', ' +
+      address.postal_code + ', ' + address.country +
+      ' · ' + address.phone;
+    card.appendChild(shipping);
+  }
+
+  const items = document.createElement('div');
+  items.className = 'order-items';
+  items.textContent = (order.order_items || []).map(item =>
+    item.quantity + ' × ' + item.product_name + ' · ' +
+    item.variant_name + ' · US ' + item.size
+  ).join(' | ') || 'No item details';
+  card.appendChild(items);
+
+  if(ownerView){
+    const management = document.createElement('div');
+    management.className = 'order-management';
+    const select = document.createElement('select');
+    select.setAttribute('aria-label', 'Update order status');
+    select.disabled = order.status === 'cancelled';
+    ['pending', 'confirmed', 'processing', 'shipped', 'delivered', 'cancelled']
+      .forEach(value => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = value;
+        option.selected = value === order.status;
+        select.appendChild(option);
+      });
+
+    select.addEventListener('change', async function(){
+      const { error } = await supabaseClient
+        .from('orders')
+        .update({ status:select.value })
+        .eq('id', order.id);
+
+      if(error){
+        showToast('Order status could not be updated: ' + error.message);
+        await loadOwnerOrders();
+        return;
+      }
+
+      showToast('Order status updated.');
+      await loadOwnerOrders();
+    });
+
+    management.appendChild(select);
+    card.appendChild(management);
+  }
+
+  return card;
+
+}
+
+async function loadCustomerOrders(){
+
+  const list = document.getElementById('customerOrders');
+  list.replaceChildren();
+
+  const { data, error } = await supabaseClient
+    .from('orders')
+    .select('id,status,total,created_at,order_items(product_name,variant_name,size,quantity,unit_price)')
+    .order('created_at', { ascending:false });
+
+  if(error){
+    list.textContent = 'Orders could not be loaded: ' + error.message;
+    return;
+  }
+
+  if(!data.length){
+    list.textContent = 'You have not placed any orders yet.';
+    return;
+  }
+
+  data.forEach(order => list.appendChild(createOrderCard(order, false)));
+
+}
+
+async function loadOwnerOrders(){
+
+  const list = document.getElementById('ownerOrders');
+  const summary = document.getElementById('ownerOrderSummary');
+  list.replaceChildren();
+  summary.textContent = 'Loading orders...';
+
+  const { data, error } = await supabaseClient
+    .from('orders')
+    .select('id,user_id,status,total,created_at,customer_name,customer_email,shipping_address,order_items(product_name,variant_name,size,quantity,unit_price)')
+    .order('created_at', { ascending:false });
+
+  if(error){
+    summary.textContent = 'Dashboard data could not be loaded.';
+    list.textContent = error.message;
+    return;
+  }
+
+  const pendingCount = data.filter(order => order.status === 'pending').length;
+  summary.textContent =
+    data.length + ' total orders · ' + pendingCount + ' pending';
+
+  if(!data.length){
+    list.textContent = 'No customer orders yet.';
+    return;
+  }
+
+  data.forEach(order => list.appendChild(createOrderCard(order, true)));
+
+}
+
+document
+  .getElementById('ordersToggle')
+  .addEventListener('click', async function(){
+
+    if(!activeUser){
+      return;
+    }
+
+    closeAccountPanels();
+    storefrontSections.forEach(section => section.hidden = true);
+    ordersPanel.hidden = false;
+    await loadCustomerOrders();
+
+  });
+
+ownerDashboardToggle.addEventListener('click', async function(){
+
+  if(!activeProfile || activeProfile.role !== 'owner'){
+    showToast('Owner access is required.');
+    return;
+  }
+
+  closeAccountPanels();
+  storefrontSections.forEach(section => section.hidden = true);
+  ownerDashboard.hidden = false;
+  await loadOwnerOrders();
+
+});
+
+document.querySelectorAll('[data-close-panel]').forEach(button => {
+  button.addEventListener('click', closeAccountPanels);
+});
+
+document
+  .getElementById('addToBagBtn')
+  .addEventListener('click', function(event){
+    if(!activeUser){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      showToast('Log in to add products to your bag.');
+    }
+  }, true);
+
+document
+  .getElementById('wishlistBtn')
+  .addEventListener('click', async function(event){
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    if(!activeUser || !supabaseClient){
+      showToast('Log in to save products.');
+      return;
+    }
+
+    const { error } = await supabaseClient
+      .from('wishlists')
+      .upsert({ user_id:activeUser.id, product_id:currentProduct.id });
+
+    if(error){
+      showToast('Could not save product: ' + error.message);
+      return;
+    }
+
+    showToast('Saved ' + currentProduct.name + ' for later.');
+  }, true);
+
+document
+  .getElementById('newsletterForm')
+  .addEventListener('submit', async function(event){
+    event.preventDefault();
+    event.stopImmediatePropagation();
+
+    const form = event.currentTarget;
+    const input = form.querySelector('input[type="email"]');
+    const newsletterMessage = document.getElementById('newsletterMsg');
+
+    if(!supabaseClient){
+      newsletterMessage.textContent =
+        'Newsletter signup is unavailable until Supabase is configured.';
+      return;
+    }
+
+    const { error } = await supabaseClient
+      .from('newsletter_subscribers')
+      .insert({ email:input.value.trim().toLowerCase() });
+
+    if(error){
+      newsletterMessage.textContent = 'Could not subscribe: ' + error.message;
+      return;
+    }
+
+    newsletterMessage.textContent = 'You’re on the list — watch your inbox.';
+    form.reset();
+  }, true);
+
+if(supabaseClient){
+  supabaseClient.auth.getSession().then(({ data, error }) => {
+    if(error){
+      setAuthMessage(loginMessage, 'Could not restore your session: ' + error.message, false);
+      showSignedOut();
+      return;
+    }
+
+    loadCurrentUser(data.session);
+  });
+
+  supabaseClient.auth.onAuthStateChange((_event, session) => {
+    window.setTimeout(() => loadCurrentUser(session), 0);
+  });
+
+}else{
+  showSignedOut();
+  setAuthMessage(
+    loginMessage,
+    supabaseSetupMessage(),
+    false
+  );
+}
+
+
+/* =========================================================
+   INITIALIZE
+========================================================= */
 
 renderGrid();
 
 setSpotlight(products[0]);
 
 renderCart();
-
-checkLoginStatus();
 
 
 })();

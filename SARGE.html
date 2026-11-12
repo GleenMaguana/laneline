@@ -126,20 +126,6 @@
 
             </div>
 
-            <div class="demo-account">
-
-                <strong>Demo Account</strong><br>
-
-                Email:
-                user@laneline.com
-
-                <br>
-
-                Password:
-                123456
-
-            </div>
-
         </div>
 
         <!-- SIGN UP -->
@@ -332,6 +318,16 @@
                     id="userName"
                 ></span>
 
+                <span class="role-badge" id="userRole"></span>
+
+                <button class="account-action" id="ordersToggle" type="button">
+                    My orders
+                </button>
+
+                <button class="account-action" id="ownerDashboardToggle" type="button" hidden>
+                    Owner dashboard
+                </button>
+
                 <button
                     class="logout-btn"
                     id="logoutBtn"
@@ -383,6 +379,29 @@
     </div>
 
 </header>
+
+<section class="account-panel wrap" id="ordersPanel" hidden>
+    <div class="account-panel-heading">
+        <div>
+            <span class="kicker">CUSTOMER ACCOUNT</span>
+            <h2>My orders</h2>
+        </div>
+        <button class="account-action" type="button" data-close-panel>Back to shop</button>
+    </div>
+    <div class="order-list" id="customerOrders" aria-live="polite"></div>
+</section>
+
+<section class="account-panel wrap" id="ownerDashboard" hidden>
+    <div class="account-panel-heading">
+        <div>
+            <span class="kicker">STORE MANAGEMENT</span>
+            <h2>Owner dashboard</h2>
+        </div>
+        <button class="account-action" type="button" data-close-panel>Back to shop</button>
+    </div>
+    <div class="dashboard-summary" id="ownerOrderSummary"></div>
+    <div class="order-list" id="ownerOrders" aria-live="polite"></div>
+</section>
 
 
 <!-- =========================================================
@@ -742,8 +761,7 @@
 
     <div class="foot-legal">
 
-        Mockup storefront for demonstration purposes.
-        © Laneline.
+        Laneline — shoes built for the stretch run. © Laneline.
 
     </div>
 
@@ -801,6 +819,44 @@
 
     <div class="drawer-foot">
 
+        <form class="checkout-address" id="checkoutAddress">
+            <h4>Shipping details</h4>
+            <label>
+                Recipient name
+                <input name="recipient_name" type="text" autocomplete="name" required>
+            </label>
+            <label>
+                Phone
+                <input name="phone" type="tel" autocomplete="tel" required>
+            </label>
+            <label>
+                Address
+                <input name="address_line1" type="text" autocomplete="address-line1" required>
+            </label>
+            <label>
+                Apartment / unit (optional)
+                <input name="address_line2" type="text" autocomplete="address-line2">
+            </label>
+            <div class="address-city-row">
+                <label>
+                    City
+                    <input name="city" type="text" autocomplete="address-level2" required>
+                </label>
+                <label>
+                    Postal code
+                    <input name="postal_code" type="text" autocomplete="postal-code" required>
+                </label>
+            </div>
+            <label>
+                Province / region (optional)
+                <input name="region" type="text" autocomplete="address-level1">
+            </label>
+            <label>
+                Country
+                <input name="country" type="text" value="Philippines" autocomplete="country-name" required>
+            </label>
+        </form>
+
         <div class="subtotal-row">
 
             <span>
@@ -822,8 +878,7 @@
 
         <p class="drawer-note">
 
-            Mockup checkout —
-            no payment is processed.
+            Orders are placed as pending. Payment is not processed online.
 
         </p>
 
@@ -840,6 +895,8 @@
 </div>
 
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="SARGE-supabase-config.js"></script>
 <script src="SARGE.js"></script>
 
 </body>
