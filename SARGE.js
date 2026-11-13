@@ -320,13 +320,24 @@ document.getElementById('heroShoe').innerHTML =
    The first color should use the product's main image.
 ========================================================= */
 
+const CURRENCY_RATE = 63.5;
+
+function formatPeso(value){
+  return new Intl.NumberFormat('en-PH', {
+    style:'currency',
+    currency:'PHP',
+    minimumFractionDigits:2,
+    maximumFractionDigits:2
+  }).format(Number(value));
+}
+
 let products = [
 
   {
     id:'p1',
     name:'ADDI ZERO',
     cat:'Running',
-    price:128,
+    price:128 * CURRENCY_RATE,
     img:'running-red.png',
 
     blurb:
@@ -343,7 +354,7 @@ let products = [
     id:'p2',
     name:'Nike GT-Cut 4',
     cat:'Basketball',
-    price:145,
+    price:145 * CURRENCY_RATE,
     img:'basketball.jpg',
 
     blurb:
@@ -360,7 +371,7 @@ let products = [
     id:'p3',
     name:'New Balance 550',
     cat:'Lifestyle',
-    price:98,
+    price:98 * CURRENCY_RATE,
     img:'casual.png',
 
     blurb:
@@ -377,7 +388,7 @@ let products = [
     id:'p4',
     name:'Agility Peak 6',
     cat:'Trail',
-    price:132,
+    price:132 * CURRENCY_RATE,
     img:'trail.png',
 
     blurb:
@@ -394,7 +405,7 @@ let products = [
     id:'p5',
     name:'Asics',
     cat:'Running',
-    price:118,
+    price:118 * CURRENCY_RATE,
     img:'running2.png',
 
     blurb:
@@ -411,7 +422,7 @@ let products = [
     id:'p6',
     name:'Sabrina 4',
     cat:'Basketball',
-    price:150,
+    price:150 * CURRENCY_RATE,
     img:'basketballshoes.png',
 
     blurb:
@@ -547,7 +558,7 @@ function renderGrid(){
           <div class="card-foot">
 
             <span class="price">
-              $${p.price}
+              ${formatPeso(p.price)}
             </span>
 
             <button
@@ -664,7 +675,7 @@ function setSpotlight(p){
 
   spBlurb.textContent = p.blurb;
 
-  spPrice.textContent = '$' + p.price;
+  spPrice.textContent = formatPeso(p.price);
 
   // Show the first color's image when the spotlight loads
   spMedia.innerHTML =
@@ -1132,7 +1143,7 @@ function renderCart(){
           </div>
 
           <div class="item-price">
-            $${item.price * item.qty}
+            ${formatPeso(item.price * item.qty)}
           </div>
 
         `;
@@ -1224,7 +1235,7 @@ function renderCart(){
     );
 
   subtotalEl.textContent =
-    '$' + subtotal;
+    formatPeso(subtotal);
 
 }
 
@@ -1387,7 +1398,7 @@ async function loadProducts(){
     slug:product.slug,
     name:product.name,
     cat:product.category,
-    price:Number(product.price),
+    price:Number(product.price) * CURRENCY_RATE,
     img:product.image_path.split('/').pop(),
     blurb:product.description,
     colors:product.product_variants.map(variant => ({
@@ -1629,7 +1640,7 @@ function createOrderCard(order, ownerView){
   const date = new Date(order.created_at).toLocaleString();
   detail.textContent = (ownerView
     ? (order.customer_name + ' · ' + order.customer_email + ' · ')
-    : '') + date + ' · $' + Number(order.total).toFixed(2);
+    : '') + date + ' · ' + formatPeso(Number(order.total));
   summary.append(title, detail);
 
   const status = document.createElement('span');
